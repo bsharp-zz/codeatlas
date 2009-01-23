@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<project name="SharpJavaLib"
+         default="main">
+	
+	<target name="main">
+
+		<tstamp>
+		  <format property="TODAY" pattern="yyyy-MM-dd" />
+		</tstamp>
+		
+		<!-- Source -->
+		<zip destfile="built/CodeAtlas_${TODAY}_source.zip"
+         basedir="src"/>
+
+		<!-- Classes -->
+		<jar destfile="built/CodeAtlas_${TODAY}.jar" basedir="bin"/>
+		
+		<!-- Both -->
+		<delete includeemptydirs="true">
+		    <fileset dir="built/classesAndSource" includes="**/*" excludes=".gitignore" />
+		</delete>
+		
+		<copy todir="built/classesAndSource">
+			<fileset  dir="src"/>
+			<fileset  dir="bin"/>
+        </copy>
+		
+		<jar destfile="built/CodeAtlas_${TODAY}_withSource.jar" basedir="built/classesAndSource"/>
+
+<jar destfile="built/CodeAtlas_${TODAY}_wLibs.jar"
+  index="true"
+  filesetmanifest="merge">
+
+  <zipfileset src="built/CodeAtlas_${TODAY}.jar" />
+  <zipgroupfileset dir="lib" includes="*.jar" />
+  <!--
+  <zipfileset dir="lib" includes="*.jar"/>
+  
+  <zipfileset src="lib/SharpJavaCharts_2008-10-09_withSource.jar" />
+  <zipfileset src="lib/SharpJavaLib_2008-10-09_withSource.jar" />
+  -->
+</jar>
+	</target>
+
+</project>
